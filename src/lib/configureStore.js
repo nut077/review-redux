@@ -1,5 +1,6 @@
-import { createStore, applyMiddleware } from 'redux';
-import { logger, storage } from '../middlewares';
+import { createStore, applyMiddleware, compose } from 'redux';
+import logger from 'redux-logger';
+import { storage } from '../middlewares';
 import rootReducer from '../reducers';
 
 export default function(initialState) {
@@ -8,6 +9,10 @@ export default function(initialState) {
   return createStore(
     rootReducer,
     initialState,
-    applyMiddleware(...middlewares)
+    compose(
+      window.__REDUX_DEVTOOLS_EXTENSION__ &&
+        window.__REDUX_DEVTOOLS_EXTENSION__(),
+      applyMiddleware(...middlewares)
+    )
   );
 }
